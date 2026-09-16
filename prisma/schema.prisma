@@ -1,0 +1,29 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum AssetStatus {
+  aktif
+  rusak
+  perbaikan
+}
+
+model Asset {
+  id                Int         @id @default(autoincrement())
+  nama_aset         String      @db.VarChar(150)
+  kategori          String      @db.VarChar(100)
+  kode_aset         String      @unique @db.VarChar(50)
+  status            AssetStatus
+  tanggal_pengadaan DateTime    @db.Date
+  created_at        DateTime    @default(now())
+  updated_at        DateTime    @updatedAt
+
+  @@index([status])
+  @@index([kategori])
+  @@map("assets")
+}
